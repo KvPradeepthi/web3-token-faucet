@@ -1,0 +1,23 @@
+{
+  "name": "web3-token-faucet",
+  "version": "1.0.0",
+  "description": "A complete decentralized application (DApp) with ERC-20 token and faucet mechanism",
+  "main": "index.js",
+  "scripts": {
+    "test": "hardhat test",
+    "deploy": "hardhat run scripts/deploy.js --network sepolia",
+    "hardhat": "hardhat"
+  },
+  "keywords": ["web3", "ethereum", "token", "faucet", "dapp"],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "@nomicfoundation/hardhat-verify": "^2.0.0",
+    "hardhat": "^2.19.0",
+    "dotenv": "^16.3.1"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.0.0"
+  }
+}
