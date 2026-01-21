@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  token-faucet:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+      - "8545:8545"
+    environment:
+      - REACT_APP_FAUCET_ADDRESS=${REACT_APP_FAUCET_ADDRESS:-0x8ba1f109551bd432803012645ac136ddd64dba72}
+      - REACT_APP_TOKEN_ADDRESS=${REACT_APP_TOKEN_ADDRESS:-0xa513e6e4b8ffaee82e0d8e6e00000007320d4435}
+      - REACT_APP_NETWORK=${REACT_APP_NETWORK:-sepolia}
+    volumes:
+      - ./contracts:/app/contracts
+      - ./src:/app/src
+      - ./test:/app/test
+    networks:
+      - token-faucet-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  hardhat:
+    image: node:18-alpine
+    working_dir: /hardhat
+    command: npx hardhat node
+    volumes:
+      - ./contracts:/hardhat/contracts
+      - ./package.json:/hardhat/package.json
+    ports:
+      - "8546:8545"
+    networks:
+      - token-faucet-network
+    depends_on:
+      - token-faucet
+
+networks:
+  token-faucet-network:
+    driver: bridge
+
+volumes:
+  contracts:
+  src:
+  test:
